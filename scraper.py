@@ -73,8 +73,8 @@ def scrape(urls, static_folder):
         raw_covers = len(cover_urls)
         print(f'Found {raw_covers} covers')
         if raw_covers > 50:
-            print('Truncating covers to most recent 50')
-            cover_urls = cover_urls[:50]
+            print('Truncating covers to most recent 100')
+            cover_urls = cover_urls[:100]
         cover_data = download_covers(cover_urls)
         print(f'Downloaded {len(cover_data)} covers')
         filenames = build_filenames(len(cover_urls))
