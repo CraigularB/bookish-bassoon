@@ -6,7 +6,6 @@ _USER_AGENT = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Ap
 
 
 def _download_from_url(url, mode):
-    print('Downloading HTML')
     headers = {}
     headers.update(_USER_AGENT)
     response = requests.get(url, headers=headers)
@@ -19,9 +18,10 @@ def _download_from_url(url, mode):
         raise ValueError('Invalid mode')
 
 
-def get_html(url):
+def get_parsed_html(url):
     print('Downloading HTML')
-    return _download_from_url(url, mode='text')
+    html = _download_from_url(url, mode='text')
+    return BeautifulSoup(html, 'html.parser')
 
 
 def download_cover(cover_url):
@@ -49,8 +49,7 @@ def parse_cover_html(cover):
 
 
 def build_filenames(num_covers):
-    filenames = ['current.jpg']
-    filenames.extend(f'{i:0>2}.jpg' for i in range(1, num_covers))
+    filenames = [f'{i:0>2}.jpg' for i in range(0, num_covers)]
     return filenames
 
 
@@ -62,20 +61,25 @@ def save_files(cover_data, filenames, static_folder):
             cover_out.write(cover)
 
 
-def scrape(url):
+def scrape(urls, static_folder):
     success = True
     try:
-        print(f'Scraping {url}')
-        html = get_html(url)
-        parsed = BeautifulSoup(html, 'html.parser')
-        covers = parsed.find_all('td', {'class': 'cover'})
-        cover_urls = [parse_cover_html(cover) for cover in covers]
-        print(f'Found {len(cover_urls)} covers')
+        cover_urls = []
+        for url in urls:
+            print(f'Scraping {url}')
+            parsed_html = get_parsed_html(url)
+            covers = parsed_html.find_all('td', {'class': 'cover'})
+            cover_urls.extend([parse_cover_html(cover) for cover in covers])
+        raw_covers = len(cover_urls)
+        print(f'Found {raw_covers} covers')
+        if raw_covers > 50:
+            print('Truncating covers to most recent 50')
+            cover_urls = cover_urls[:50]
         cover_data = download_covers(cover_urls)
         print(f'Downloaded {len(cover_data)} covers')
         filenames = build_filenames(len(cover_urls))
         print('Saving covers')
-        save_files(cover_data, filenames)
+        save_files(cover_data, filenames, static_folder)
         print('Done scraping')
     except Exception as e:
         success = False

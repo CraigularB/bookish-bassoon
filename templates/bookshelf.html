@@ -42,12 +42,12 @@
             }, 1000);  // Match this timeout with the CSS transition duration
         }
 
-        setInterval(rotateImage, 10000);  // Change image every 10 seconds
+        setInterval(rotateImage, {{ rotate }});  // Change image every 10 seconds
 
         // Refresh the page every 5 minutes (300,000 milliseconds)
         setInterval(() => {
             location.reload();
-        }, 300000);  // 300000 ms = 5 minutes
+        }, {{ refresh }});  // 300000 ms = 5 minutes
     </script>
 </body>
 </html>
