@@ -10,7 +10,7 @@ _IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png'}
 _SECONDS_TO_MILLISECONDS = 1000
 URLS = [
     'https://www.goodreads.com/review/list/17267214-craig?shelf=currently-reading',
-    'https://www.goodreads.com/review/list/17267214?shelf=read'
+    'https://www.goodreads.com/review/list/17267214?shelf=read&per_page=50'
 ]
 
 
