@@ -10,8 +10,8 @@ _IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png'}
 _SECONDS_TO_MILLISECONDS = 1000
 URLS = [
     'https://www.goodreads.com/review/list/17267214-craig?shelf=currently-reading',
-    'https://www.goodreads.com/review/list/17267214?shelf=read&per_page=50'
-]
+    'https://www.goodreads.com/review/list/17267214?shelf=read&per_page=100'
+]  # Let's see if I can get this passed in another way
 
 
 def _is_image_file(filename):
@@ -24,12 +24,7 @@ def _check_first_run(image_dir):
 
 
 def _do_update():
-    # scrape both currently reading and recently read
-    urls = [
-        'https://www.goodreads.com/review/list/17267214-craig?shelf=currently-reading',
-        'https://www.goodreads.com/review/list/17267214?shelf=read'
-    ]
-    success = scrape(urls, app.static_folder)
+    success = scrape(URLS, app.static_folder)
     return success
 
 
@@ -67,4 +62,4 @@ def update():
 
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)
