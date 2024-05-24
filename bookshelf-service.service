@@ -1,0 +1,12 @@
+[Unit]
+Description=A service to run my Python virtual bookshelf
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/home/craig/bookshelf_pi/bookshelf.sh
+User=craig
+Group=craig
+
+[Install]
+WantedBy=multi-user.target
